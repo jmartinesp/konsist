@@ -56,8 +56,8 @@ internal object KoFileDeclarationProvider {
                     createKoFilesDeclarationDeferred ?: async(Dispatchers.IO) {
                         projectRootDir
                             .walk()
-                            .filter { it.isKotlinFile }
-                            .filter { filter == null || filter(it) }
+                            .onEnter { it.isDirectory && !it.name.startsWith(".") }
+                            .filter { it.isKotlinFile && (filter == null || filter(it)) }
                             .map { async { parseKotlinFile(it) } }
                             .toList()
                             .awaitAll()
