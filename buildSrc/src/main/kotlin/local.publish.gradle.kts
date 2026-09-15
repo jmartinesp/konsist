@@ -20,7 +20,7 @@ publishing {
                 "Konsist is a powerful static code analyzer tailored for Kotlin, " +
                     "focused on ensuring codebase consistency and adherence to coding conventions."
 
-            groupId = "com.lemonappdev"
+            groupId = "com.github.jmartinesp"
             artifactId = "konsist"
             version = project.getFullKonsistVersion(releaseTarget)
             description = konsistDescription
@@ -70,52 +70,52 @@ publishing {
         }
     }
 
-    repositories {
-        maven {
-            when (releaseTarget) {
-                ReleaseTarget.LOCAL -> {
-                    name = "local"
-                    url = mavenLocal().url
-                }
-
-                ReleaseTarget.SNAPSHOT -> {
-                    name = "snapshot"
-                    // Repository URL for snapshot deployment and download access:
-                    url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-
-                    setCredentialsFromGradleProperties()
-                }
-
-                ReleaseTarget.RELEASE -> {
-                    name = "release"
-                    // Repository URL for release deployment, no download access! :
-                    url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
-
-                    setCredentialsFromGradleProperties()
-                }
-            }
-        }
-    }
-}
-
-signing {
-    val signingKey = getLocalPropertyOrGradleProperty("konsist.signingKey")
-    val signingPassword = getLocalPropertyOrGradleProperty("konsist.signingPassword")
-
-    if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(
-            decodeBase64(signingKey),
-            decodeBase64(signingPassword),
-        )
-
-        sign(publishing.publications[konsistPublicationName])
-    } else {
-        if (signingKey == null) {
-            logger.warn("Property 'konsist.signingKey' is not provided. Skipping signing.")
-        } else if (signingPassword == null) {
-            logger.warn("Property 'signingPassword' is not provided. Skipping signing.")
-        }
-    }
+//    repositories {
+//        maven {
+//            when (releaseTarget) {
+//                ReleaseTarget.LOCAL -> {
+//                    name = "local"
+//                    url = mavenLocal().url
+//                }
+//
+//                ReleaseTarget.SNAPSHOT -> {
+//                    name = "snapshot"
+//                    // Repository URL for snapshot deployment and download access:
+//                    url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+//
+//                    setCredentialsFromGradleProperties()
+//                }
+//
+//                ReleaseTarget.RELEASE -> {
+//                    name = "release"
+//                    // Repository URL for release deployment, no download access! :
+//                    url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
+//
+//                    setCredentialsFromGradleProperties()
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//signing {
+//    val signingKey = getLocalPropertyOrGradleProperty("konsist.signingKey")
+//    val signingPassword = getLocalPropertyOrGradleProperty("konsist.signingPassword")
+//
+//    if (signingKey != null && signingPassword != null) {
+//        useInMemoryPgpKeys(
+//            decodeBase64(signingKey),
+//            decodeBase64(signingPassword),
+//        )
+//
+//        sign(publishing.publications[konsistPublicationName])
+//    } else {
+//        if (signingKey == null) {
+//            logger.warn("Property 'konsist.signingKey' is not provided. Skipping signing.")
+//        } else if (signingPassword == null) {
+//            logger.warn("Property 'signingPassword' is not provided. Skipping signing.")
+//        }
+//    }
 }
 
 fun MavenArtifactRepository.setCredentialsFromGradleProperties() {
